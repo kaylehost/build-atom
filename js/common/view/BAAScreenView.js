@@ -253,6 +253,7 @@ class BAAScreenView extends ScreenView {
       model.particleAtom,
       tandem.createTandem( 'periodicTableAndSymbol' ),
       {
+        resizeSymbol: true,
         pickable: false
       }
     );

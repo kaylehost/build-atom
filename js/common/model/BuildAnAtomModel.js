@@ -17,6 +17,7 @@ import PhetColorScheme from '../../../../scenery-phet/js/PhetColorScheme.js';
 import AtomIdentifier from '../../../../shred/js/AtomIdentifier.js';
 import Particle from '../../../../shred/js/model/Particle.js';
 import ParticleAtom from '../../../../shred/js/model/ParticleAtom.js';
+import ParticleNucleus from '../../../../shred/js/model/ParticleNucleus.js';
 import ShredConstants from '../../../../shred/js/ShredConstants.js';
 import BooleanIO from '../../../../tandem/js/types/BooleanIO.js';
 import buildAnAtom from '../../buildAnAtom.js';
@@ -81,10 +82,19 @@ class BuildAnAtomModel {
     } );
 
     // Create the atom that the user will build, modify, and generally play with.
-    this.particleAtom = new ParticleAtom( {
-      tandem: tandem.createTandem( 'particleAtom' ),
-      phetioState: options.phetioState
-    } );
+    if ( options.includeChargeAndElectrons ) {
+      this.particleAtom = new ParticleAtom( {
+        tandem: tandem.createTandem( 'particleAtom' ),
+        phetioState: options.phetioState
+      } );
+    }
+    else {
+      this.particleAtom = new ParticleNucleus( {
+        tandem: tandem.createTandem( 'particleAtom' ),
+        phetioState: options.phetioState
+      } );
+    }
+
 
     // Create the buckets that will hold the sub-atomic particles.
     this.buckets = {
