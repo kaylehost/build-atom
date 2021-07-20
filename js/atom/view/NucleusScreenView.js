@@ -5,6 +5,7 @@
  */
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
+import merge from '../../../../phet-core/js/merge.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import ShredConstants from '../../../../shred2/js/ShredConstants.js';
 import AccordionBox from '../../../../sun/js/AccordionBox.js';
@@ -22,14 +23,15 @@ const ACCORDION_BOX_BUTTON_DILATION = 12;
 class NucleusScreenView extends BAAScreenView {
 
   /**
-   * Constructor.
-   *
    * @param {BuildAnAtomModel} model Build an Atom model object.
    * @param {Tandem} tandem
-   * @constructor
+   * @param {Object} [options]
    */
-  constructor( model, tandem ) {
-    super( model, tandem );
+  constructor( model, tandem, options ) {
+    options = merge( {
+      buildANucleusSim: false
+    }, options );
+    super( model, tandem, options );
 
     this.symbolAccordionBoxExpandedProperty = new BooleanProperty( true, {
       tandem: tandem.createTandem( 'symbolAccordionBoxExpandedProperty' )
