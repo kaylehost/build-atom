@@ -7,6 +7,7 @@
  */
 
 import Vector2 from '../../../../dot/js/Vector2.js';
+import merge from '../../../../phet-core/js/merge.js';
 import PhetColorScheme from '../../../../scenery-phet/js/PhetColorScheme.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
@@ -26,9 +27,20 @@ class SymbolNode extends Node {
 
     super( { tandem: tandem, pickable: false } );
 
+    // don't pass options through to Node superclass because they get passed through mutate in the children classes
+    options = merge( {
+      boundingBoxWidth: 275, // In screen coords, which are roughly pixels.
+      boundingBoxHeight: 300, // In screen coords, which are roughly pixels.
+      symbolFontSize: 150
+    }, options );
+
+    // @protected (read-only)
+    this.boundingBoxWidth = options.boundingBoxWidth;
+    this.boundingBoxHeight = options.boundingBoxHeight;
+
     // @public (read-only) - add the bounding box, which is also the root node for everything else
     // that comprises this node.
-    this.boundingBox = new Rectangle( 0, 0, SymbolNode.SYMBOL_BOX_WIDTH, SymbolNode.SYMBOL_BOX_HEIGHT, 0, 0, {
+    this.boundingBox = new Rectangle( 0, 0, options.boundingBoxWidth, options.boundingBoxHeight, 0, 0, {
       stroke: 'black',
       lineWidth: 2,
       fill: 'white',
@@ -38,14 +50,14 @@ class SymbolNode extends Node {
 
     // Add the symbol text.
     const symbolText = new Text( '', {
-      font: new PhetFont( 150 ),
+      font: new PhetFont( options.symbolFontSize ),
       fill: 'black',
-      center: new Vector2( SymbolNode.SYMBOL_BOX_WIDTH / 2, SymbolNode.SYMBOL_BOX_HEIGHT / 2 ),
+      center: new Vector2( options.boundingBoxWidth / 2, options.boundingBoxHeight / 2 ),
       tandem: tandem.createTandem( 'symbolText' )
     } );
 
     // Add the listener to update the symbol text.
-    const textCenter = new Vector2( SymbolNode.SYMBOL_BOX_WIDTH / 2, SymbolNode.SYMBOL_BOX_HEIGHT / 2 );
+    const textCenter = new Vector2( options.boundingBoxWidth / 2, options.boundingBoxHeight / 2 );
     numberAtom.protonCountProperty.link( protonCount => {
       const symbol = AtomIdentifier.getSymbol( protonCount );
       symbolText.text = protonCount > 0 ? symbol : '';
@@ -64,7 +76,7 @@ class SymbolNode extends Node {
     numberAtom.protonCountProperty.link( protonCount => {
       atomicNumberDisplay.text = protonCount;
       atomicNumberDisplay.left = SymbolNode.NUMBER_INSET;
-      atomicNumberDisplay.bottom = SymbolNode.SYMBOL_BOX_HEIGHT - SymbolNode.NUMBER_INSET;
+      atomicNumberDisplay.bottom = options.boundingBoxHeight - SymbolNode.NUMBER_INSET;
     } );
     this.boundingBox.addChild( atomicNumberDisplay );
 
@@ -86,8 +98,6 @@ class SymbolNode extends Node {
 }
 
 SymbolNode.NUMBER_FONT = new PhetFont( 56 );
-SymbolNode.SYMBOL_BOX_HEIGHT = 300; // In screen coords, which are roughly pixels.
-SymbolNode.SYMBOL_BOX_WIDTH = 275; // In screen coords, which are roughly pixels.
 SymbolNode.NUMBER_INSET = 20; // In screen coords, which are roughly pixels.
 
 buildAnAtom.register( 'SymbolNode', SymbolNode );

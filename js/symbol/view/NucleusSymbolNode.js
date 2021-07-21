@@ -7,7 +7,9 @@
  * @author Luisa Vargas
  */
 
+import Property from '../../../../axon/js/Property.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
+import merge from '../../../../phet-core/js/merge.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import AtomIdentifier from '../../../../shred/js/AtomIdentifier.js';
@@ -22,50 +24,32 @@ class NucleusSymbolNode extends SymbolNode {
    */
   constructor( numberAtom, tandem, options ) {
 
+    options = merge( {
+      boundingBoxWidth: 245,
+      boundingBoxHeight: 290,
+      symbolFontSize: 120
+    }, options );
+
     super( numberAtom, tandem, options );
 
     // Add the isotope naming notation
-    const isotopeText = new Text( '', {
+    const isotopeTextAndNumber = new Text( '', {
       font: new PhetFont( 57 ),
       fill: 'black',
-      center: new Vector2( 220, SymbolNode.SYMBOL_BOX_HEIGHT + 35 ),
-      tandem: tandem.createTandem( 'isotopeText' )
+      center: new Vector2( 220, this.boundingBoxHeight + 35 ),
+      tandem: tandem.createTandem( 'isotopeTextAndNumber' )
     } );
-    this.boundingBox.addChild( isotopeText );
+    this.boundingBox.addChild( isotopeTextAndNumber );
 
-    //Add the listener to update the isotope name
-    numberAtom.protonCountProperty.link( protonCount => {
-      const isotope = AtomIdentifier.getName( protonCount );
-      isotopeText.text = protonCount > 0 ? isotope : '';
-      isotopeText.right = 210;
-      isotopeText.top = SymbolNode.SYMBOL_BOX_HEIGHT + 35;
-    } );
+    // update the isotope text and mass number whenever either of them change
+    Property.multilink( [ numberAtom.protonCountProperty, numberAtom.massNumberProperty ],
+      ( protonCount, massNumber ) => {
+        const isotopeText = protonCount > 0 ? AtomIdentifier.getName( protonCount ) : '';
+        isotopeTextAndNumber.text = massNumber > 0 ? `${isotopeText} - ${massNumber}` : isotopeText;
 
-    //add the isotope number notation aka mass number
-    const isotopeNumText = new Text( '', {
-      font: new PhetFont( 57 ),
-      fill: 'black',
-      center: new Vector2( 270, SymbolNode.SYMBOL_BOX_HEIGHT + 67.5 ),
-      tandem: tandem.createTandem( 'isotopeText' )
-    } );
-    this.addChild( isotopeNumText );
-
-    //add listener to update the isotope text mass number
-    numberAtom.massNumberProperty.link( massNumber => {
-      isotopeNumText.text = massNumber > 0 ? ' - ' + massNumber : '';
-      if ( massNumber < 10 ) {
-        isotopeNumText.center = new Vector2( 250, SymbolNode.SYMBOL_BOX_HEIGHT + 67.5 );
-      }
-      else {
-        isotopeNumText.center = new Vector2( 265, SymbolNode.SYMBOL_BOX_HEIGHT + 67.5 );
-      }
-    } );
-
-    // Do the layout.
-    this.boundingBox.top = 0;
-    this.boundingBox.left = 20;
-    isotopeText.left = 0;
-    isotopeText.centerY = this.boundingBox.bottom + 5;
+        isotopeTextAndNumber.centerX = this.boundingBoxWidth / 2;
+        isotopeTextAndNumber.top = this.boundingBoxHeight + 35;
+      } );
 
     this.mutate( options );
   }

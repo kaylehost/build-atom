@@ -40,7 +40,7 @@ class AtomSymbolNode extends SymbolNode {
     numberAtom.chargeProperty.link( charge => {
       chargeDisplay.text = ( charge > 0 ? '+' : '' ) + charge;
       chargeDisplay.fill = ShredConstants.CHARGE_TEXT_COLOR( charge );
-      chargeDisplay.right = SymbolNode.SYMBOL_BOX_WIDTH - SymbolNode.NUMBER_INSET;
+      chargeDisplay.right = this.boundingBoxWidth - SymbolNode.NUMBER_INSET;
       chargeDisplay.top = SymbolNode.NUMBER_INSET;
     } );
 
