@@ -14,13 +14,14 @@ import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import AtomIdentifier from '../../../../shred/js/AtomIdentifier.js';
 import buildAnAtom from '../../buildAnAtom.js';
-import SymbolNode from './SymbolNode.js';
+import SymbolNode from '../../../../shred/js/view/SymbolNode.js';
 
 class NucleusSymbolNode extends SymbolNode {
 
   /**
    * @param {NumberAtom} numberAtom
    * @param {Tandem} tandem
+   * @param {Object} [options]
    */
   constructor( numberAtom, tandem, options ) {
 

@@ -12,7 +12,7 @@ import AccordionBox from '../../../../sun/js/AccordionBox.js';
 import buildAnAtomStrings from '../../buildAnAtomStrings.js';
 import buildAnAtom from '../../buildAnAtom.js';
 import BAAScreenView from '../../common/view/BAAScreenView.js';
-import NucleusSymbolNode from '../../symbol/view/NucleusSymbolNode.js';
+import NucleusSymbolNode from '../../common/view/NucleusSymbolNode.js';
 
 const symbolString = buildAnAtomStrings.symbol;
 

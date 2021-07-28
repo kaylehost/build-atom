@@ -28,6 +28,7 @@ import ShredConstants from '../../../../shred/js/ShredConstants.js';
 import AtomNode from '../../../../shred/js/view/AtomNode.js';
 import BucketDragListener from '../../../../shred/js/view/BucketDragListener.js';
 import NucleusNode from '../../../../shred/js/view/NucleusNode.js';
+import NuclideChartNode from '../../../../shred/js/view/NuclideChartNode.js';
 import ParticleCountDisplay from '../../../../shred/js/view/ParticleCountDisplay.js';
 import ParticleView from '../../../../shred/js/view/ParticleView.js';
 import ParticleAtomDisplay from '../../../../shred/js/view/ParticleAtomDisplay.js';
@@ -36,8 +37,7 @@ import AquaRadioButton from '../../../../sun/js/AquaRadioButton.js';
 import RectangularPushButton from '../../../../sun/js/buttons/RectangularPushButton.js';
 import Panel from '../../../../sun/js/Panel.js';
 import VerticalCheckboxGroup from '../../../../sun/js/VerticalCheckboxGroup.js';
-import NuclideChart from '../../atom/view/NuclideChart.js';
-import PeriodicTableAndSymbol from '../../atom/view/PeriodicTableAndSymbol.js';
+import PeriodicTableAndSymbol from '../../../../shred/js/view/PeriodicTableAndSymbol.js';
 import buildAnAtom from '../../buildAnAtom.js';
 import buildAnAtomStrings from '../../buildAnAtomStrings.js';
 import BAAGlobalOptions from '../BAAGlobalOptions.js';
@@ -233,12 +233,23 @@ class BAAScreenView extends ScreenView {
 
     let particleAtomDisplay;
     let particleCountDisplay;
+    let periodicTableAndSymbol;
     if ( options.buildANucleusSim ) {
       // Add the particle atom small nucleus on the top middle.
       particleAtomDisplay = new ParticleAtomDisplay( model.particleAtom, {
         tandem: tandem.createTandem( 'particleAtomDisplay' )
       } );  // Width arbitrarily chosen.
       this.addChild( particleAtomDisplay );
+      // Add the periodic table display inside of an accordion box.
+      periodicTableAndSymbol = new PeriodicTableAndSymbol(
+        model.particleAtom,
+        tandem.createTandem( 'periodicTableAndSymbol' ),
+        {
+          symbolWidthProportion: 0.1,
+          symbolTextFontSize: 36,
+          pickable: false
+        }
+      );
     }
     else {
       // Add the particle count indicator.
@@ -246,17 +257,18 @@ class BAAScreenView extends ScreenView {
         tandem: tandem.createTandem( 'particleCountDisplay' )
       } );  // Width arbitrarily chosen.
       this.addChild( particleCountDisplay );
+      // Add the periodic table display inside of an accordion box.
+      periodicTableAndSymbol = new PeriodicTableAndSymbol(
+        model.particleAtom,
+        tandem.createTandem( 'periodicTableAndSymbol' ),
+        {
+          symbolWidthProportion: 0.2,
+          symbolTextFontSize: 48,
+          pickable: false
+        }
+      );
     }
 
-    // Add the periodic table display inside of an accordion box.
-    const periodicTableAndSymbol = new PeriodicTableAndSymbol(
-      model.particleAtom,
-      tandem.createTandem( 'periodicTableAndSymbol' ),
-      {
-        resizeSymbol: true,
-        pickable: false
-      }
-    );
     periodicTableAndSymbol.scale( 0.55 ); // Scale empirically determined to match layout in design doc.
     const periodicTableAccordionBoxTandem = tandem.createTandem( 'periodicTableAccordionBox' );
     this.periodicTableAccordionBox = new AccordionBox( periodicTableAndSymbol, {
@@ -286,7 +298,7 @@ class BAAScreenView extends ScreenView {
 
     if ( options.buildANucleusSim ) {
       //add the chart of the nuclides inside of an accordion box
-      const nuclideChart = new NuclideChart(
+      const nuclideChart = new NuclideChartNode(
         model.particleAtom,
         tandem.createTandem( 'nuclideChart' ),
         {

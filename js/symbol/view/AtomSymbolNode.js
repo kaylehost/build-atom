@@ -15,7 +15,7 @@ import ShredConstants from '../../../../shred/js/ShredConstants.js';
 import scaleIcon from '../../../images/scale_png.js';
 import buildAnAtom from '../../buildAnAtom.js';
 import ChargeMeter from '../../common/view/ChargeMeter.js';
-import SymbolNode from './SymbolNode.js';
+import SymbolNode from '../../../../shred/js/view/SymbolNode.js';
 
 class AtomSymbolNode extends SymbolNode {
 
@@ -23,6 +23,7 @@ class AtomSymbolNode extends SymbolNode {
    * Constructor
    * @param {NumberAtom} numberAtom
    * @param {Tandem} tandem
+   * @param {Object} [options]
    */
   constructor( numberAtom, tandem, options ) {
 
